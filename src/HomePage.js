@@ -1,5 +1,7 @@
-import React from "react";
 import axios from "axios";
+import React, {useCallback} from 'react'
+import {useDropzone} from 'react-dropzone'
+import UploadFile from "./UploadFile";
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -12,18 +14,24 @@ class HomePage extends React.Component {
         food : "",
         products : [],
         productsAfterFilter : [],
-        combination : []
+        combination : [],
+        photo : ""
+    }
+
+     setFoodFromUploadFile = (data)=>{
+        this.state.food = data;
+        console.log(this.state.food + " gfthfhg")
     }
 
     componentDidMount() {
-        axios.get("http://localhost:9124/get-products").then(response => {
-            console.log(response.data);
-            this.setState({
-                products : response.data
-
-            })
-
-        })
+        // axios.get("http://localhost:9124/get-products").then(response => {
+        //     console.log(response.data);
+        //     this.setState({
+        //         products : response.data
+        //
+        //     })
+        //
+        // })
     }
 
     combination = () => {
@@ -74,41 +82,37 @@ class HomePage extends React.Component {
 
 
 
-
     render() {
-        return(
+        return (
             <div>
                 <input onChange={(event) =>this.valueChange("food",event)} value={this.state.food} type={"text"} placeholder={"מה תרצה להזמין"} id={"placeholder"}/>
-                <button onClick={this.combination} >  הרכבה </button>
-                <button onClick={this.productsAfterFilter} id={"search"} חיפוש ></button>
+                <button onClick={this.combination} id={"combButton"} >  הרכבה </button>
+                <button onClick={this.productsAfterFilter} id={"search"}  >חיפוש</button>
                 <input id={"range"} type={"range"} min={"0"} max={"200"} value={this.state.price}
                        onChange={(event) =>this.valueChange("price",event)} step={"1"}/>
-                <div>
+                <div id={"price"}>
                     ₪  {this.state.price}
                 </div>
                 <div  id={"combination"}>
-                    {this.state.productsAfterFilter.map((product) =>{
+                    {this.state.combination.map((product) =>{
                         return( <div>
                             <button key={product.id}>
-                            {product.name} {product.price}
+                            {product.name} {product.price}₪
                         </button> </div>)
                     })}
                 </div>
 
-                <div>
-                    {this.state.combination.map((product) =>{
+                <div id={"searchResult"}>
+                    {this.state.productsAfterFilter.map((product) =>{
                         return(  <div>
                             <button key={product.id}>
-                            {product.name} {product.price}
+                            {product.name} {product.price}₪
                         </button>
                         </div>)
                     })}
                 </div>
-
-
+                <UploadFile sendDataToHomePage = {this.setFoodFromUploadFile} />
             </div>
-
-
         )
     }
 }
