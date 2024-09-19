@@ -20,7 +20,6 @@ class HomePage extends React.Component {
 
      setFoodFromUploadFile = (data)=>{
         this.state.food = data;
-        console.log(this.state.food + " gfthfhg")
     }
 
     componentDidMount() {
@@ -88,7 +87,7 @@ class HomePage extends React.Component {
                 <input onChange={(event) =>this.valueChange("food",event)} value={this.state.food} type={"text"} placeholder={"מה תרצה להזמין"} id={"placeholder"}/>
                 <button onClick={this.combination} id={"combButton"} >  הרכבה </button>
                 <button onClick={this.productsAfterFilter} id={"search"}  >חיפוש</button>
-                <input id={"range"} type={"range"} min={"0"} max={"200"} value={this.state.price}
+                <input id={"range"} type={"range"} min={"0"} max={"1000"} value={this.state.price}
                        onChange={(event) =>this.valueChange("price",event)} step={"1"}/>
                 <div id={"price"}>
                     ₪  {this.state.price}
@@ -107,7 +106,9 @@ class HomePage extends React.Component {
                         return(  <div>
                             <button key={product.id}>
                             {product.name} {product.price}₪
-                        </button>
+                                <img src={product.image} width="100" height="100" />
+
+                            </button>
                         </div>)
                     })}
                 </div>
